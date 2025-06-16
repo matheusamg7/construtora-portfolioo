@@ -56,9 +56,12 @@ const Header = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="text-gray-700 hover:text-[#1B4B73] transition-colors duration-300 font-medium"
+                className="text-gray-600 hover:text-[#1B4B73] transition-colors duration-300 font-medium relative group"
               >
-                {item.name}
+                <span className="relative">
+                  {item.name}
+                  <span className="absolute left-0 -bottom-0.5 h-[1px] bg-[#1B4B73] transition-all duration-500 ease-out w-0 group-hover:w-full"></span>
+                </span>
               </motion.a>
             ))}
             <motion.a
@@ -98,9 +101,12 @@ const Header = () => {
                 key={item.name}
                 href={item.href}
                 onClick={() => setIsMenuOpen(false)}
-                className="block text-gray-700 hover:text-[#1B4B73] transition-colors duration-300 font-medium py-2"
+                className="block text-gray-600 hover:text-[#1B4B73] transition-colors duration-300 font-medium py-2 relative group"
               >
-                {item.name}
+                <span className="relative inline-block">
+                  {item.name}
+                  <span className="absolute left-0 -bottom-0.5 h-[1px] bg-[#1B4B73] transition-all duration-500 ease-out w-0 group-hover:w-full"></span>
+                </span>
               </a>
             ))}
             <a
