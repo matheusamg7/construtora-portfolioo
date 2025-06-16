@@ -8,7 +8,7 @@ import FeaturedProjects from '@/components/FeaturedProjects'
 import TimelineSection from '@/components/TimelineSection'
 import ProcessSection from '@/components/ProcessSection'
 import DifferentialsSection from '@/components/DifferentialsSection'
-import FinancingSection from '@/components/FinancingSection'
+import EnhancedFinancingSection from '@/components/EnhancedFinancingSection'
 import ContactSection from '@/components/ContactSection'
 import Footer from '@/components/Footer'
 
@@ -20,7 +20,7 @@ export default function Home() {
         <HeroCards />
         <StorySection />
         <FeaturedProjects />
-        <FinancingSection />
+        <EnhancedFinancingSection />
         <TimelineSection />
         <DifferentialsSection />
         <ContactSection />

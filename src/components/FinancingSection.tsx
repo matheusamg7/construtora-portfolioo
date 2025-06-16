@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Calculator, X } from 'lucide-react'
 
@@ -52,9 +52,50 @@ const FinancingSection = () => {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
+  // Controlar o scroll do body quando o modal abre/fecha
+  useEffect(() => {
+    if (isModalOpen) {
+      // Salvar a posição atual do scroll
+      const scrollY = window.scrollY
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollY}px`
+      document.body.style.width = '100%'
+      document.body.setAttribute('data-lenis-prevent', 'true')
+    } else {
+      // Restaurar o scroll
+      const scrollY = document.body.style.top
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
+      document.body.removeAttribute('data-lenis-prevent')
+      
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1)
+      }
+    }
+
+    return () => {
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
+      document.body.removeAttribute('data-lenis-prevent')
+    }
+  }, [isModalOpen])
+
   return (
     <>
-      <section className="py-20 bg-gradient-to-br from-[#1B4B73] to-[#153a5c] relative overflow-hidden">
+      <section className="py-20 relative overflow-hidden">
+        {/* Imagem de fundo desvanecida */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: 'url("/claude images/Image_fx (3).jpg")',
+            transform: 'scaleX(-1)',
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-black/80 to-gray-900/80" style={{ transform: 'scaleX(-1)' }}></div>
+        </div>
+        
         <div className="absolute inset-0 opacity-10">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-white rounded-full blur-3xl"></div>
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-white rounded-full blur-3xl"></div>
@@ -123,14 +164,19 @@ const FinancingSection = () => {
 
       {/* Modal de Simulação */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div 
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          onClick={() => setIsModalOpen(false)}
+        >
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+            data-lenis-prevent
           >
-            <div className="p-6 lg:p-8">
-              <div className="flex justify-between items-center mb-6">
+            <div className="flex-shrink-0 p-6 lg:p-8 border-b">
+              <div className="flex justify-between items-center">
                 <h3 className="text-2xl font-montserrat font-bold text-[#1B4B73]">
                   Simulador de Financiamento
                 </h3>
@@ -141,7 +187,9 @@ const FinancingSection = () => {
                   <X size={24} />
                 </button>
               </div>
+            </div>
 
+            <div className="flex-1 overflow-y-auto p-6 lg:p-8" data-lenis-prevent>
               <div className="space-y-6">
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">
